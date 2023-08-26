@@ -126,7 +126,7 @@ export default {
             title:'删除',
             btn: [
                 {
-                  text:'确定', callback: (id) => {
+                  text:'确定', callback: (id:any) => {
                     let loadId = layer.load(0)
                     deleteById(data.id).then(({code,msg}) => {
                       if(code == 200){
@@ -147,7 +147,7 @@ export default {
                   }
                 },
                 {
-                  text:'取消', callback: (id) => { 
+                  text:'取消', callback: (id:any) => { 
                     layer.close(id); 
                   }
                 }

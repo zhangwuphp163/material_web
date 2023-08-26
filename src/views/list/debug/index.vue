@@ -7,7 +7,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   data() {
     return {
@@ -19,8 +19,8 @@ export default {
     openDialog() {
       // 异步加载文件的 HTML 内容
       this.loadFileContent().then(content => {
-        this.htmlContent = content;
-        this.dialogVisible = true;
+        //htmlContent = content;
+        //this.dialogVisible = true;
       });
     },
     loadFileContent() {
