@@ -26,52 +26,49 @@
               </lay-col>
             </lay-row>
           </lay-card>
-        
-
-        <br />
-
-        <lay-card title="物料列表">
-          <lay-table :columns="columns" :dataSource="formData.items">
-            <template #material_id="{ data,rowIndex }" >
-              <lay-form-item  :prop="'items.'+rowIndex+'.material_id'" label="物料名称">
-                <lay-select v-model="data.material_id"  :items="materialSourceData" :options="materialSourceData" :show-search="true"></lay-select>
-              </lay-form-item>
-            </template>
-            <template #supplier_id="{ data,rowIndex }" >
-              <lay-form-item  :prop="'items.'+rowIndex+'.supplier_id'" label="供应商">
-                <lay-select v-model="data.supplier_id"  :items="supplierSourceData" :options="supplierSourceData" :show-search="true"></lay-select>
-              </lay-form-item>
-            </template>
-            <template #plan_qty="{ data,rowIndex }">
-              <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
-                <lay-input-number
-                  :model-value="data.plan_qty"
-                ></lay-input-number>
-              </lay-form-item>
-            </template>
-            <template #plan_unit_price="{ data,rowIndex }">
-              <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
-                <lay-input-number :step="0.01"
-                  :model-value="data.plan_unit_price"
-                ></lay-input-number>
-              </lay-form-item>
-            </template>
-            <template #operate="{ data }">
-              <lay-button type="danger" size="xs" @click="deleteHandler(data)">
-                删除
-              </lay-button>
-            </template>
-          </lay-table>
-          <lay-button
-            border="green"
-            border-style="dashed"
-            :fluid="true"
-            @click="addHandler"
-            style="margin-top: 10px"
-            >新增</lay-button
-          >
-        </lay-card>
-      </lay-form>
+          <lay-line theme="orange"></lay-line>
+          <lay-card title="物料列表">
+            <lay-table :columns="columns" :dataSource="formData.items">
+              <template #material_id="{ data,rowIndex }" >
+                <lay-form-item  :prop="'items.'+rowIndex+'.material_id'" label="物料名称">
+                  <lay-select v-model="data.material_id"  :items="materialSourceData" :options="materialSourceData" :show-search="true"></lay-select>
+                </lay-form-item>
+              </template>
+              <template #supplier_id="{ data,rowIndex }" >
+                <lay-form-item  :prop="'items.'+rowIndex+'.supplier_id'" label="供应商">
+                  <lay-select v-model="data.supplier_id"  :items="supplierSourceData" :options="supplierSourceData" :show-search="true"></lay-select>
+                </lay-form-item>
+              </template>
+              <template #plan_qty="{ data,rowIndex }">
+                <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
+                  <lay-input-number
+                    :model-value="data.plan_qty"
+                  ></lay-input-number>
+                </lay-form-item>
+              </template>
+              <template #plan_unit_price="{ data,rowIndex }">
+                <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
+                  <lay-input-number :step="0.01"
+                    :model-value="data.plan_unit_price"
+                  ></lay-input-number>
+                </lay-form-item>
+              </template>
+              <template #operate="{ data }">
+                <lay-button type="danger" size="xs" @click="deleteHandler(data)">
+                  删除
+                </lay-button>
+              </template>
+            </lay-table>
+            <lay-button
+              border="green"
+              border-style="dashed"
+              :fluid="true"
+              @click="addHandler"
+              style="margin-top: 10px"
+              >新增</lay-button
+            >
+          </lay-card>
+        </lay-form>
       </lay-container>
     </div>
     <div class="footer">

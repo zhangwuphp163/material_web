@@ -1,6 +1,6 @@
 import Http from '../http';
 
-export const supplier = function(data: any) {
+export const asn = function(data: any) {
     return Http.post('/api/asn', data)
 }
 

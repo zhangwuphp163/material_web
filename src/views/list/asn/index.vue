@@ -26,7 +26,7 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
-import { supplier,deleteById } from '../../../api/module/asn'
+import { asn,deleteById } from '../../../api/module/asn'
 import router from '../../../router'
 
 export default{
@@ -99,7 +99,7 @@ export default{
                       if(code == 200){
                         layer.msg(msg,{icon:1})
                         loading.value = true
-                        supplier({}).then(({data,code}) => {
+                        asn(searchFormData).then(({data,code}) => {
                           loading.value = false
                           dataSource.value = data
                         })
@@ -125,9 +125,10 @@ export default{
     
     function toSearch(){
       loading.value = true
-      supplier(searchFormData).then(({data,code}) => {
+      asn(searchFormData).then(({data,code,total}) => {
         loading.value = false
         dataSource.value = data
+        searchFormData.pageInfo.total = total
       })
     }
 
@@ -146,9 +147,10 @@ export default{
   },
    mounted() {
     this.loading = true
-    supplier(this.searchFormData).then(({data,code}) => {
+    asn(this.searchFormData).then(({data,code,total}) => {
       this.loading = false
       this.dataSource = data
+      this.searchFormData.pageInfo.total = total
     })
   },
 }
