@@ -9,3 +9,7 @@ export const verificationImg = function () {
 export const loginQrcode = function () {
   return Http.get('/login/loginQrcode')
 }
+
+export const getSelectList = function (formData:any) {
+  return Http.post('/api/commonest/get-select-list')
+}

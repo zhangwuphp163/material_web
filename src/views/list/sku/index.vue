@@ -43,8 +43,7 @@
           >
         
             <template v-slot:toolbar>
-              <lay-button @click="openTopDrawer" type="primary">上</lay-button>
-              <!-- <lay-button size="sm" type="primary" @click="createSku">新增</lay-button> -->
+              <lay-button size="sm" type="primary" @click="createSku">新增</lay-button>
               <!-- <lay-button size="sm" @click="batchDelete" class="d-none">批量删除</lay-button> -->
             </template>
             <template v-slot:operator="{ data }">
@@ -62,6 +61,7 @@
 import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { sku,deleteById } from '../../../api/module/sku'
+import router from '../../../router'
 
 export default {
   setup() {
@@ -117,7 +117,11 @@ export default {
     const model = {}
 
     const editRaw = function(data: any){
-      
+      router.push('/list/sku/edit/'+data.id);
+    }
+
+    function createSku(){
+      router.push('/list/sku/create');
     }
 
     const deleteRaw = function(data: any){
@@ -173,14 +177,7 @@ export default {
         page.total = total
       })
     }
-    const openTopDrawer = function() {
-    layer.drawer({
-        title: "标题",
-        content: '<lay-input v-model="searchForm.name" style="width: 90%" ></lay-input>',
-        offset: "t"
-    })
-}
-  
+
     return {
       columns,
       dataSource,
@@ -195,7 +192,7 @@ export default {
       model,
       deleteRaw,
       editRaw,
-      openTopDrawer
+      createSku
     }
   },
   mounted(){

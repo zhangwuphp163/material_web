@@ -91,10 +91,23 @@ const menus = [
         title: "物料列表"
       },
       {
-        id: "/table/sku",
+        id: "/list/sku",
         icon: "layui-icon-list",
-        title: "商品列表"
+        title: "商品列表",
+        // children: [
+        //   {
+        //     id: "/list/sku",
+        //     icon: "layui-icon-list",
+        //     title: "商品列表"
+        //   },
+        //   {
+        //     id: "/list/sku/create",
+        //     icon: "layui-icon-list",
+        //     title: "商品创建"
+        //   },
+        // ]
       },
+      
       {
         id: "/list/debug",
         icon: "layui-icon-list",

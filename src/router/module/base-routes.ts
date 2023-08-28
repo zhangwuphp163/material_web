@@ -164,19 +164,32 @@ export default [
          path: '/table/material',
          name: 'material',
          component: () => import('../../views/list/material/index.vue'),
-         meta: { title: '物料列表', requireAuth: true, affix: true},
+         meta: { title: '物料列表', requireAuth: true},
        },
        {
-        path: '/table/sku',
+        path: '/list/sku',
         name: '商品列表',
         component: () => import('../../views/list/sku/index.vue'),
-        meta: { title: '商品列表', requireAuth: true, affix: true},
+        meta: { title: '商品列表', requireAuth: true},
+      },
+      {
+        path: '/list/sku/create',
+        name: '商品创建',
+        component: () => import('../../views/list/sku/form.vue'),
+        meta: { title: '商品创建', requireAuth: true},
+      },
+      {
+        path: '/list/sku/edit/:id',
+        name: '商品编辑',
+        component: () => import('../../views/list/sku/form.vue'),
+        meta: { title: '商品编辑', requireAuth: true},
+        props: true
       },
       {
         path: '/list/debug',
         name: 'Debug',
         component: () => import('../../views/list/debug/index.vue'),
-        meta: { title: 'Debug', requireAuth: true, affix: true},
+        meta: { title: 'Debug', requireAuth: true},
       },
     ]
   }, 

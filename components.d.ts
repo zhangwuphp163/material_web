@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    LayAutocomplete: typeof import('@layui/layui-vue')['LayAutocomplete']
     LayAvatar: typeof import('@layui/layui-vue')['LayAvatar']
     LayAvatarList: typeof import('@layui/layui-vue')['LayAvatarList']
     LayBadge: typeof import('@layui/layui-vue')['LayBadge']

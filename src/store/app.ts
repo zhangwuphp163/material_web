@@ -4,7 +4,7 @@ export const useAppStore = defineStore({
   id: 'app',
   state: () => {
     return {
-      tab: false,
+      tab: true,
       logo: true,
       level: true,
       inverted: false,
