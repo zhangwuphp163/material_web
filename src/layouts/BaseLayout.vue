@@ -118,14 +118,14 @@
                 ></lay-icon>
               </lay-fullscreen>
             </lay-menu-item>
-            <lay-menu-item>
+            <!-- <lay-menu-item>
               <global-message-tab :flag="flag">
                 <lay-icon
                   type="layui-icon-notice"
                   @click="changeDropdown"
                 ></lay-icon>
               </global-message-tab>
-            </lay-menu-item>
+            </lay-menu-item> -->
             <lay-menu-item>
               <lay-dropdown updateAtScroll placement="bottom">
                 <lay-icon type="layui-icon-website"></lay-icon>
@@ -150,13 +150,13 @@
                 <lay-icon type="layui-icon-username"></lay-icon>
                 <template #content>
                   <lay-dropdown-menu>
-                    <lay-dropdown-menu-item @click="toUserInfo">
+                    <!-- <lay-dropdown-menu-item @click="toUserInfo">
                       <template #default>用户信息</template>
                     </lay-dropdown-menu-item>
                     <lay-dropdown-menu-item @click="toSystemSet">
                       <template #default>系统设置</template>
                     </lay-dropdown-menu-item>
-                    <lay-line></lay-line>
+                    <lay-line></lay-line> -->
                     <lay-dropdown-menu-item @click="logOut">
                       <template #default>注销登录</template>
                     </lay-dropdown-menu-item>

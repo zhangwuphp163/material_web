@@ -6,29 +6,21 @@
         style="padding: 10px; padding-top: 0px; position: relative"
       >
         <lay-form :model="formData" ref="layFormRef" required>
-          <lay-card title="商品信息">
+          <lay-card title="入库单信息">
             <lay-row>
-              <lay-col md="8">
-                <lay-form-item label="条码" prop="barcode">
+              <lay-col md="12">
+                <lay-form-item label="入库单号" prop="asn_number">
                   <lay-input
                     placeholder="请输入条码"
-                    v-model="formData.barcode"
+                    v-model="formData.asn_number"
                   ></lay-input>
                 </lay-form-item>
               </lay-col>
-              <lay-col md="8">
-                <lay-form-item label="名称" prop="name">
+              <lay-col md="12">
+                <lay-form-item label="备注">
                   <lay-input
-                    placeholder="请输入名称"
-                    v-model="formData.name"
-                  ></lay-input>
-                </lay-form-item>
-              </lay-col>
-              <lay-col md="8">
-                <lay-form-item label="描述" prop="description">
-                  <lay-input
-                    placeholder="请输入描述"
-                    v-model="formData.description"
+                    placeholder="请输入备注"
+                    v-model="formData.remarks"
                   ></lay-input>
                 </lay-form-item>
               </lay-col>
@@ -40,15 +32,27 @@
 
         <lay-card title="物料列表">
           <lay-table :columns="columns" :dataSource="formData.items">
-            <template #name="{ data,rowIndex }" >
+            <template #material_id="{ data,rowIndex }" >
               <lay-form-item  :prop="'items.'+rowIndex+'.material_id'" label="物料名称">
                 <lay-select v-model="data.material_id"  :items="materialSourceData" :options="materialSourceData" :show-search="true"></lay-select>
               </lay-form-item>
             </template>
-            <template #qty="{ data,rowIndex }">
-              <lay-form-item :prop="'items.'+rowIndex+'.qty'" label="数量">
+            <template #supplier_id="{ data,rowIndex }" >
+              <lay-form-item  :prop="'items.'+rowIndex+'.supplier_id'" label="供应商">
+                <lay-select v-model="data.supplier_id"  :items="supplierSourceData" :options="supplierSourceData" :show-search="true"></lay-select>
+              </lay-form-item>
+            </template>
+            <template #plan_qty="{ data,rowIndex }">
+              <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
                 <lay-input-number
-                  :model-value="data.qty"
+                  :model-value="data.plan_qty"
+                ></lay-input-number>
+              </lay-form-item>
+            </template>
+            <template #plan_unit_price="{ data,rowIndex }">
+              <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
+                <lay-input-number :step="0.01"
+                  :model-value="data.plan_unit_price"
                 ></lay-input-number>
               </lay-form-item>
             </template>
@@ -73,7 +77,6 @@
     <div class="footer">
       <div class="footer-button">
         <lay-button type="primary" @click="submitForm">提交</lay-button>
-        <!-- <lay-button @click="">重置</lay-button> -->
       </div>
     </div>
   </div>
@@ -82,26 +85,37 @@
 <script lang="ts">
 import { ref, watch, reactive } from 'vue'
 import { layer } from '@layui/layer-vue'
-import { skuCreateOrUpdate,getSkuInfo } from '../../../api/module/sku'
+import { createOrUpdate,getAsnInfo } from '../../../api/module/asn'
 import { getSelectList } from '../../../api/module/commone'
 import router from '../../../router'
 
 export default {
   name: 'Intricate',
-  props: ['sku_id'],
+  props: ['asn_id'],
   setup() {
     // 表格列
     const columns = [
       {
         title: '物料名称',
-        key: 'name',
-        customSlot: 'name'
+        key: 'material_id',
+        customSlot: 'material_id'
       },
       {
-        title: '数量',
-        key: 'qty',
+        title: '供应商',
+        key: 'supplier_id',
+        customSlot: 'supplier_id'
+      },
+      {
+        title: '计划数量',
+        key: 'plan_qty',
         ellipsisTooltip: true,
-        customSlot: 'qty'
+        customSlot: 'plan_qty'
+      },
+      {
+        title: '计划单价',
+        key: 'plan_unit_price',
+        ellipsisTooltip: true,
+        customSlot: 'plan_unit_price'
       },
       {
         title: '操作',
@@ -111,21 +125,6 @@ export default {
         ellipsisTooltip: true
       }
     ]
-    // 编辑表格
-    const editHandle = (data: any) => {
-      data.isEdit = true
-    }
-
-    // 保存表格编辑
-    const saveTable = (data: any) => {
-      data.isEdit = false
-    }
-
-    // 表格编辑的输入事件
-    const changeData = (val: any, data: any, key: string) => {
-      data[key] = val
-    }
-
     // 删除行逻辑
     const deleteHandler = (data: any) => {
       layer.confirm('确定删除此条数据？', {
@@ -157,22 +156,25 @@ export default {
         id:'',
         rowIndex: (formData.value.items.length + 1).toString(),
         material_id: '',
-        qty: 1
+        supplier_id:'',
+        plan_qty: 1,
+        plan_unit_price:0.00
       })
     }
 
     // 表单数据
     const formData = ref({
       id: '',
-      name: '',
-      barcode: '',
-      description: '',
+      asn_number: '',
+      remarks: '',
       items: [
       {
         id:'',
         material_id: '',
+        supplier_id:'',
         rowIndex: "1",
-        qty: 1
+        plan_qty: 1,
+        plan_unit_price:0.00
       }
     ]
     })
@@ -184,12 +186,14 @@ export default {
         (isValidate: boolean, model: any, errors: any) => {
           if (isValidate) {
             let id = layer.load(1)
-            skuCreateOrUpdate(formData.value).then(({code,msg}) => {
+            createOrUpdate(formData.value).then(({code,msg}) => {
               if(code == 200){
                 layer.msg(msg, { icon: 1, time: 2000 },function(){
-                  router.push('/list/sku')
+                  router.push('/list/asn')
                   //location.reload()
                 })
+              }else{
+                layer.msg(msg, { icon: 2, time: 2000 })
               }
             }).finally(() => {
               layer.close(id)
@@ -202,26 +206,28 @@ export default {
     }
 
     const materialSourceData = ref([])
+    const supplierSourceData = ref([])
     return {
-      saveTable,
-      editHandle,
       columns,
-      changeData,
       formData,
       submitForm,
       layFormRef,
       deleteHandler,
       addHandler,
-      materialSourceData
+      materialSourceData,
+      supplierSourceData
     }
   },
   mounted(){
     getSelectList({type:"material"}).then(({data,code})=>{
       this.materialSourceData = data
     })
-    if(this.sku_id != undefined){
+    getSelectList({type:"supplier"}).then(({data,code})=>{
+      this.supplierSourceData = data
+    })
+    if(this.asn_id != undefined){
       let id = layer.load(1)
-      getSkuInfo(this.sku_id).then(({code,data}) => {
+      getAsnInfo(this.asn_id).then(({code,data}) => {
         this.formData = data
         
       }).finally(() => {

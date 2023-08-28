@@ -11,5 +11,5 @@ export const loginQrcode = function () {
 }
 
 export const getSelectList = function (formData:any) {
-  return Http.post('/api/commonest/get-select-list')
+  return Http.post('/api/commonest/get-select-list',formData)
 }
