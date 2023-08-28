@@ -57,6 +57,19 @@ export default [
         meta: { title: '订单列表', requireAuth: true,affix: true},
       },
       {
+        path: '/list/order/create',
+        name: '订单创建',
+        component: () => import('../../views/list/order/form.vue'),
+        meta: { title: '订单创建', requireAuth: true,affix: true},
+      },
+      {
+        path: '/list/order/edit/:order_id',
+        name: '订单编辑',
+        component: () => import('../../views/list/order/form.vue'),
+        meta: { title: '订单编辑', requireAuth: true,affix: true},
+        props: true
+      },
+      {
         path: '/list/material',
         name: '物料列表',
         component: () => import('../../views/list/material/index.vue'),

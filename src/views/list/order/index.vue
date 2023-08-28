@@ -4,27 +4,17 @@
       <lay-col :md="24">
         <lay-card>
           <lay-table
+            :page="page"
             :columns="columns"
             :dataSource="dataSource"
             :loading="loading"
           >
             <template v-slot:toolbar>
-              <lay-button size="sm" type="primary" @click="createSupplier">新增</lay-button>
+              <lay-button size="sm" type="primary" @click="createAsn">新增</lay-button>
             </template>
             <template v-slot:operator="{ data }">
-              <lay-button size="xs" type="primary" @click="editSupplier(data)">修改</lay-button>
+              <lay-button size="xs" type="primary" @click="editRaw(data)">修改</lay-button>
               <lay-button size="xs" @click="deleteRaw(data)">删除</lay-button>
-            </template>
-            <template v-slot:footer>
-              <lay-layer v-model="visible" :shade="false" :area="['500px', '450px']" :btn="action">
-                <div style="padding: 20px;">
-                  <lay-form :model="model">
-                    <lay-form-item label="预报单号" prop="asn_number" required>
-                      <lay-input v-model="model.asn_number"></lay-input>
-                    </lay-form-item>
-                  </lay-form>
-                </div>
-              </lay-layer>
             </template>
           </lay-table>
         </lay-card>
@@ -36,8 +26,8 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
-import { createOrUpdate,supplier,deleteById } from '../../../api/module/asn'
-
+import { order,deleteById } from '../../../api/module/order'
+import router from '../../../router'
 
 export default{
   setup() {
@@ -45,7 +35,42 @@ export default{
       {
         title:"名称",
         width:"200px",
-        key:"asn_number"
+        key:"order_number"
+      },
+      {
+        title:"状态",
+        width:"200px",
+        key:"status"
+      },
+      {
+        title:"备注",
+        width:"200px",
+        key:"remarks"
+      },
+      {
+        title:"运费",
+        width:"200px",
+        key:"freight"
+      },
+      {
+        title:"加工费用",
+        width:"200px",
+        key:"process_cost"
+      },
+      {
+        title:"加工时间",
+        width:"200px",
+        key:"process_time"
+      },
+      {
+        title:"分配时间",
+        width:"200px",
+        key:"allocate_at"
+      },
+      {
+        title:"出库时间",
+        width:"200px",
+        key:"outbound_at"
       },
       {
         title:"创建时间",
@@ -63,15 +88,21 @@ export default{
     const dataSource = ref([])
     const loading = ref(false)
     const visible = ref(false)
-    const model = {
-      id:'',
-      asn_number:''
+    const page = {limit:10,current:1,total:0,showCount:true,showRefresh:true}
+
+    const searchFormData = {
+      asn_number:'',
+      pageInfo:page
     }
-    const editSupplier = function(data: any){
-      model.id = data.id
-      model.asn_number = data.asn_number
-      visible.value = true
+
+    function createAsn(){
+      router.push('/list/order/create');
     }
+
+    const editRaw = function(data: any){
+      router.push('/list/order/edit/'+data.id);
+    }
+
     const deleteRaw = function(data: any){
       layer.confirm("确认删除？",{
             title:'删除',
@@ -83,12 +114,11 @@ export default{
                       if(code == 200){
                         layer.msg(msg,{icon:1})
                         loading.value = true
-                        supplier({}).then(({data,code}) => {
+                        order(searchFormData).then(({data,code}) => {
                           loading.value = false
                           dataSource.value = data
                         })
                       }else{
-                        console.log(msg)
                         layer.msg(msg,{icon:2})
                       }
                     }).finally(() => {
@@ -106,43 +136,15 @@ export default{
             }
             
         );
-    
     }
-    const action = ref([
-    {
-        text: "确认",
-        callback: () => {
-          let loadId = layer.load(0)
-          createOrUpdate(model).then(({code,msg}) => {
-          
-            if(code == 200){
-              layer.msg(msg,{ icon: 1 })
-              visible.value = false
-              if(model.id == ''){
-                toSearch()
-              }
-            }else{
-              layer.msg(msg,{ icon: 2,time:2000})
-            }
-          }).finally(() => {
-            layer.close(loadId)
-          })
-        }
-      }
-    ])
-
+    
     function toSearch(){
       loading.value = true
-      supplier({}).then(({data,code}) => {
+      order(searchFormData).then(({data,code,total}) => {
         loading.value = false
         dataSource.value = data
+        searchFormData.pageInfo.total = total
       })
-    }
-
-    function createSupplier(){
-      model.id = ''
-      model.asn_number = ''
-      visible.value = true
     }
 
     return {
@@ -150,21 +152,21 @@ export default{
       dataSource,
       loading,
       deleteRaw,
-      editSupplier,
       visible,
-      model,
       toSearch,
-      createSupplier,
-      action
+      page,
+      searchFormData,
+      editRaw,
+      createAsn
     }
   },
    mounted() {
     this.loading = true
-    supplier({}).then(({data,code}) => {
-        this.loading = false
-        this.dataSource = data
-      })
-      
+    order(this.searchFormData).then(({data,code,total}) => {
+      this.loading = false
+      this.dataSource = data
+      this.searchFormData.pageInfo.total = total
+    })
   },
 }
 </script>
