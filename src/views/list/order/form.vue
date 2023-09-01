@@ -37,14 +37,14 @@
               <template #plan_qty="{ data,rowIndex }">
                 <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
                   <lay-input-number
-                    :model-value="data.plan_qty"
+                    v-model="data.plan_qty"
                   ></lay-input-number>
                 </lay-form-item>
               </template>
               <template #plan_unit_price="{ data,rowIndex }">
                 <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
                   <lay-input-number :step="0.01"
-                    :model-value="data.plan_unit_price"
+                    v-model="data.plan_unit_price"
                   ></lay-input-number>
                 </lay-form-item>
               </template>
@@ -77,9 +77,10 @@
 <script lang="ts">
 import { ref, watch, reactive } from 'vue'
 import { layer } from '@layui/layer-vue'
-import { createOrUpdate,getAsnInfo } from '../../../api/module/order'
+import { createOrUpdate,getOrderInfo } from '../../../api/module/order'
 import { getSelectList } from '../../../api/module/commone'
 import router from '../../../router'
+import { number } from 'echarts'
 
 export default {
   name: 'Intricate',
@@ -143,7 +144,7 @@ export default {
         id:'',
         rowIndex: (formData.value.items.length + 1).toString(),
         sku_id: '',
-        plan_qty: 1,
+        plan_qty: '1',
         plan_unit_price:0.00
       })
     }
@@ -158,7 +159,7 @@ export default {
         id:'',
         sku_id: '',
         rowIndex: "1",
-        plan_qty: 1,
+        plan_qty: '1',
         plan_unit_price:0.00
       }
     ]
@@ -207,7 +208,7 @@ export default {
     })
     if(this.order_id != undefined){
       let id = layer.load(1)
-      getAsnInfo(this.order_id).then(({code,data}) => {
+      getOrderInfo(this.order_id).then(({code,data}) => {
         this.formData = data
         
       }).finally(() => {

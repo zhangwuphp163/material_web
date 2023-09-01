@@ -48,7 +48,7 @@
             <template #qty="{ data,rowIndex }">
               <lay-form-item :prop="'items.'+rowIndex+'.qty'" label="数量">
                 <lay-input-number
-                  :model-value="data.qty"
+                  v-model="data.qty"
                 ></lay-input-number>
               </lay-form-item>
             </template>

@@ -35,51 +35,51 @@ export default [
         path: '/list/asn',
         name: '入库列表',
         component: () => import('../../views/list/asn/index.vue'),
-        meta: { title: '入库列表', requireAuth: true,affix: true},
+        meta: { title: '入库列表', requireAuth: true},
       },
       {
         path: '/list/asn/create',
         name: '入库单创建',
         component: () => import('../../views/list/asn/form.vue'),
-        meta: { title: '入库单创建', requireAuth: true,affix: true},
+        meta: { title: '入库单创建', requireAuth: true},
       },
       {
         path: '/list/asn/edit/:asn_id',
         name: '入库单编辑',
         component: () => import('../../views/list/asn/form.vue'),
-        meta: { title: '入库单编辑', requireAuth: true,affix: true},
+        meta: { title: '入库单编辑', requireAuth: true},
         props: true
       },
       {
         path: '/list/order',
         name: '订单列表',
         component: () => import('../../views/list/order/index.vue'),
-        meta: { title: '订单列表', requireAuth: true,affix: true},
+        meta: { title: '订单列表', requireAuth: true},
       },
       {
         path: '/list/order/create',
         name: '订单创建',
         component: () => import('../../views/list/order/form.vue'),
-        meta: { title: '订单创建', requireAuth: true,affix: true},
+        meta: { title: '订单创建', requireAuth: true},
       },
       {
         path: '/list/order/edit/:order_id',
         name: '订单编辑',
         component: () => import('../../views/list/order/form.vue'),
-        meta: { title: '订单编辑', requireAuth: true,affix: true},
+        meta: { title: '订单编辑', requireAuth: true},
         props: true
       },
       {
         path: '/list/material',
         name: '物料列表',
         component: () => import('../../views/list/material/index.vue'),
-          meta: { title: '物料列表', requireAuth: true,affix: true},
+          meta: { title: '物料列表', requireAuth: true},
       },
       {
         path: '/list/sku',
         name: '商品列表',
         component: () => import('../../views/list/sku/index.vue'),
-        meta: { title: '商品列表', requireAuth: true,affix: true},
+        meta: { title: '商品列表', requireAuth: true},
       },
       {
         path: '/list/sku/create',
@@ -98,7 +98,26 @@ export default [
         path: '/list/supplier',
         name: '供应商列表',
         component: () => import('../../views/list/supplier/index.vue'),
-        meta: { title: '供应商列表', requireAuth: true,affix: true},
+        meta: { title: '供应商列表', requireAuth: true},
+      },
+      {
+        path: '/list/debug',
+        name: 'Debug',
+        component: () => import('../../views/list/debug/index.vue'),
+        meta: { title: 'Debug', requireAuth: true},
+      },
+    ]
+  },
+  {
+    path: '/operation',
+    component: BaseLayout,
+    meta: { title: '操作页面' },
+    children: [
+      {
+        path: '/operation/inbound',
+        name: '入库',
+        component: () => import('../../views/operation/inbound.vue'),
+        meta: { title: 'Dashboards', requireAuth: true, affix: true, closable: false },
       },
     ]
   }

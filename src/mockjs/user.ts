@@ -27,7 +27,7 @@ const menus = [
       {
         id: "/list/asn",
         icon: "layui-icon-list",
-        title: "入库列表"
+        title: "入库列表",
       },
       {
         id: "/list/order",
@@ -48,6 +48,23 @@ const menus = [
         id: "/list/supplier",
         icon: "layui-icon-list",
         title: "供应商"
+      },
+      {
+        id: "/list/debug",
+        icon: "layui-icon-list",
+        title: "Debug"
+      }
+    ]
+  },
+  {
+    id: "/operation",
+    icon: "layui-icon-component",
+    title: "操作页面",
+    children: [
+      {
+        id: "/operation/inbound",
+        icon: "layui-icon-find-fill",
+        title: "入库"
       }
     ]
   },

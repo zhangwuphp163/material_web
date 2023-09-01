@@ -42,14 +42,14 @@
               <template #plan_qty="{ data,rowIndex }">
                 <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
                   <lay-input-number
-                    :model-value="data.plan_qty"
+                    v-model="data.plan_qty"
                   ></lay-input-number>
                 </lay-form-item>
               </template>
               <template #plan_unit_price="{ data,rowIndex }">
                 <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
                   <lay-input-number :step="0.01"
-                    :model-value="data.plan_unit_price"
+                    v-model="data.plan_unit_price"
                   ></lay-input-number>
                 </lay-form-item>
               </template>

@@ -33,7 +33,7 @@ export default{
   setup() {
     const columns = [
       {
-        title:"名称",
+        title:"订单号",
         width:"200px",
         key:"order_number"
       },

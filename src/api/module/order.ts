@@ -12,6 +12,6 @@ export const deleteById = function(id: string) {
     return Http.delete('/api/order/'+id,{})
 }
 
-export const getAsnInfo = function(id: string) {
+export const getOrderInfo = function(id: string) {
     return Http.get('/api/order/info/'+id,{})
 }

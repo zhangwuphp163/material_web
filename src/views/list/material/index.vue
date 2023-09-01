@@ -60,7 +60,7 @@
               <lay-button size="xs" @click="deleteRaw(data)">删除</lay-button>
             </template>
             <template v-slot:footer>
-              <lay-layer v-model="visible" :shade="false" :area="['500px', '450px']" :btn="action" :title="operationType">
+              <!-- <lay-layer v-model="visible" :shade="false" :area="['500px', '450px']" :btn="action" :title="operationType">
                 <div style="padding: 20px;">
                   <lay-form :model="model">
                     <lay-form-item label="条码" prop="barcode" required >
@@ -75,9 +75,10 @@
                     <lay-form-item label="单价" prop="unit_price">
                       <lay-input v-model="model.unit_price"></lay-input>
                     </lay-form-item>
+                    <DetailPage :title="detail.title" :content="detail.content" />
                   </lay-form>
                 </div>
-              </lay-layer>
+              </lay-layer> -->
             </template>
           </lay-table>
         </lay-card>
@@ -90,8 +91,12 @@
 import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { material,createOrUpdate,deleteById } from '../../../api/module/material'
+import DetailPage from '../debug/page.vue';
 
 export default {
+  components:{
+    DetailPage
+  },
   setup() {
     const selectedKeys = ref([])
     const checkbox = ref(false)
@@ -102,6 +107,10 @@ export default {
     const dataSource = ref([])
     const operation = ref("create")
     const operationType = ref("新增")
+    const detail = {
+        title: '详情标题',
+        content: '详情内容'
+      }
 
     const columns = [
       {
@@ -306,7 +315,8 @@ export default {
       createMaterial,
       operation,
       operationType,
-      toSearch
+      toSearch,
+      detail
     }
   },
   mounted() {
