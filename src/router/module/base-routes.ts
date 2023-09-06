@@ -117,7 +117,7 @@ export default [
         path: '/operation/inbound',
         name: '入库',
         component: () => import('../../views/operation/inbound.vue'),
-        meta: { title: 'Dashboards', requireAuth: true, affix: true, closable: false },
+        meta: { title: '入库', requireAuth: true, affix: true, closable: false },
       },
     ]
   }
