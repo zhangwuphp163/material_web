@@ -8,16 +8,23 @@
             :columns="columns"
             :dataSource="dataSource"
             :loading="loading"
+            skin="row"
+            :even="true"
+            @change="change"
+            size="md"
+            :resize="false"
+            @sort-change="sortChange"
           >
             <template v-slot:processing="{ data }">
-              <lay-progress :percent="data.processing"  theme="orange" style="width: 100%;" :show-text="data.processing"></lay-progress>
+              <lay-progress :percent="data.processing"  theme="orange" style="width: 100%;"  :show-text="true" :text="data.processing"></lay-progress>
             </template>
             <template v-slot:toolbar>
               <lay-button size="sm" type="primary" @click="createAsn">新增</lay-button>
             </template>
             <template v-slot:operator="{ data }">
-              <lay-button size="xs" type="primary" @click="editRaw(data)">修改</lay-button>
-              <lay-button size="xs" @click="deleteRaw(data)">删除</lay-button>
+              <lay-button size="xs" type="warm" @click="showRaw(data)">查看</lay-button>
+              <lay-button size="xs" type="primary" v-if="data.status != 'finished'" @click="editRaw(data)">修改</lay-button>
+              <lay-button size="xs" type="danger" v-if="false" @click="deleteRaw(data)">删除</lay-button>
             </template>
           </lay-table>
         </lay-card>
@@ -36,38 +43,49 @@ export default{
   setup() {
     const columns = [
       {
-        title:"名称",
-        key:"asn_number"
+        sort:"DESC",
+        title:"入库单号",
+        key:"asn_number",
+        align:"center",
+        fixed:"left"
       },
       {
+        sort:"DESC",
         title:"状态",
-        key:"status"
+        key:"status",
+        align:"center"
       },
       {
         title:"收货进度",
         key:"processing",
         customSlot: 'processing',
+        align:"center"
       },
       {
         title:"备注",
-        key:"remarks"
+        key:"remarks",
+        align:"center"
       },
       {
         title:"入库时间",
-        key:"inbound_at"
+        key:"inbound_at",
+        align:"center"
       },
       {
         title:"确认时间",
-        key:"confirmed_at"
+        key:"confirmed_at",
+        align:"center"
       },
       {
         title:"创建时间",
-        key:"created_at"
+        key:"created_at",
+        align:"center"
       },
       {
         title: '操作',
-        width: '120px',
+        width: '160px',
         customSlot: 'operator',
+        align:"center",
         key: 'operator',
         fixed: 'right'
       }
@@ -79,6 +97,8 @@ export default{
 
     const searchFormData = {
       asn_number:'',
+      sort:'',
+      sort_by:'desc',
       pageInfo:page
     }
 
@@ -88,6 +108,10 @@ export default{
 
     const editRaw = function(data: any){
       router.push('/list/asn/edit/'+data.id);
+    }
+
+    const showRaw = function(data: any){
+      router.push('/list/asn/show/'+data.id+'/show');
     }
 
     const deleteRaw = function(data: any){
@@ -134,6 +158,15 @@ export default{
       })
     }
 
+    const change = function () {
+      toSearch()
+    }
+    const sortChange = function(sort:any,sortBy:any){
+      searchFormData.sort = sort
+      searchFormData.sort_by = sortBy
+      toSearch();
+    }
+
     return {
       columns,
       dataSource,
@@ -144,7 +177,10 @@ export default{
       page,
       searchFormData,
       editRaw,
-      createAsn
+      createAsn,
+      showRaw,
+      change,
+      sortChange
     }
   },
    mounted() {

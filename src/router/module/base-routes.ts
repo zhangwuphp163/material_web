@@ -51,6 +51,13 @@ export default [
         props: true
       },
       {
+        path: '/list/asn/show/:asn_id/:action',
+        name: '入库单详情',
+        component: () => import('../../views/list/asn/form.vue'),
+        meta: { title: '入库单详情', requireAuth: true},
+        props: true
+      },
+      {
         path: '/list/order',
         name: '订单列表',
         component: () => import('../../views/list/order/index.vue'),

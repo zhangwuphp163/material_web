@@ -15,8 +15,8 @@
               <!-- <lay-switch v-model="is_auto_submit" onswitch-text="自动提交"  unswitch-text="是否自动提交"></lay-switch> -->
             </lay-form-item>
               
-            <!-- <lay-form-item label="单价" prop="unit_price">
-              <lay-input-number v-model="formData.unit_price" setup="0.01" min="0.00" ref="unit_price" @keyup.enter="validatorForm"></lay-input-number>
+            <!-- <lay-form-item label="单价">
+              <lay-input-number v-model="formData.actual_unit_price" :step="0.01"></lay-input-number>
             </lay-form-item> -->
             <lay-form-item>
                 <lay-row :space="20">
@@ -40,10 +40,11 @@
         
       </lay-col>
       <lay-col md="16">
-        <lay-table :columns="columns" :dataSource="dataSource" :span-method="spanMethod" :default-toolbar="false">
+        <lay-table :columns="columns" :dataSource="dataSource"  :default-toolbar="false">
+          <tr><td>11</td></tr>
           <template v-slot:actual_qty="{ data }">
-              <span style="color:#f00">{{ data.actual_qty }}</span>
-            </template>
+            <span style="color:#f00">{{ data.actual_qty }}</span>
+          </template>
         </lay-table>
       </lay-col>
 
@@ -64,14 +65,15 @@ export default {
     const formData = ref({
       asn_number:'',
       material_barcode:'',
-      qty:"1"
+      qty:1,
+      //actual_unit_price:0.00
     })
     const is_auto_submit = ref(false)
     const dataSource = ref([])
-    function validatorForm(type: any,event){
+    function validatorForm(type: any,event:any){
       if(event.code == "NumpadEnter"){
         if(type == 'asn_number'){
-          let layerId = layer.load(2)
+          let layerId = layer.load(1)
           getItems(formData.value.asn_number).then(({data,code,msg}) => {
             if(code == 200){
               dataSource.value = data
@@ -95,7 +97,8 @@ export default {
       formData.value = {
         asn_number:'',
         material_barcode:'',
-        qty:"1"
+        qty:1,
+        actual_unit_price:0.00
       }
       asn_number_ref.value.focus()
       dataSource.value = []
@@ -126,11 +129,13 @@ export default {
     }
 
     function inboundPost(){
-      let layerId = layer.load(3)
+      let layerId = layer.load(1)
         inbound(formData.value).then(({code,msg,data}) => {
           if(code == 200){
             dataSource.value = data
             layer.msg(msg,{icon:1,time:2000});
+          }else{
+            layer.msg(msg,{icon:2,time:2000})
           }
         }).finally(() => {
           formData.value.material_barcode = ''

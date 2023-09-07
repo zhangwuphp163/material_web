@@ -245,7 +245,6 @@ export default {
         dataSource.value = data
         page.total = total
       })
-      //layer.msg('current:' + current + ' limit:' + limit)
     }
 
     function toReset() {
@@ -328,19 +327,6 @@ export default {
       
   },
   methods: {
-    // toSearch(){
-    //   this.loading = true
-    //   material(this.searchForm).then(({data,code,page}) => {
-    //     this.loading = false
-    //     this.dataSource = data
-    //     this.page = page
-    //     //console.log(res);
-    //   })
-    // },
-    // changeVisible(){
-    //   console.log('debug')
-    //   this.visible = ref(true)
-    // } ,
     batchDelete(){
       console.log(this.selectedKeys)
     }
