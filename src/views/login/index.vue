@@ -9,7 +9,7 @@
                 <div style="height: 180px">
                   <lay-form-item :label-width="0">
                     <lay-input :allow-clear="true" prefix-icon="layui-icon-username" placeholder="用户名"
-                      v-model="loginForm.account"></lay-input>
+                      v-model="loginForm.username"></lay-input>
                   </lay-form-item>
                   <lay-form-item :label-width="0">
                     <lay-input :allow-clear="true" prefix-icon="layui-icon-password" placeholder="密码" password
@@ -43,7 +43,7 @@ export default defineComponent({
     const method = ref('1')
     const loging = ref(false);
     const loginForm = reactive({
-      account: 'root',
+      username: 'root',
       password: '123456'
     })
     onMounted(() => {

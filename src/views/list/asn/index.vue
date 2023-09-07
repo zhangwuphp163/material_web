@@ -9,6 +9,9 @@
             :dataSource="dataSource"
             :loading="loading"
           >
+            <template v-slot:processing="{ data }">
+              <lay-progress :percent="data.processing"  theme="orange" style="width: 100%;" :show-text="data.processing"></lay-progress>
+            </template>
             <template v-slot:toolbar>
               <lay-button size="sm" type="primary" @click="createAsn">新增</lay-button>
             </template>
@@ -34,37 +37,36 @@ export default{
     const columns = [
       {
         title:"名称",
-        width:"200px",
         key:"asn_number"
       },
       {
         title:"状态",
-        width:"200px",
         key:"status"
       },
       {
+        title:"收货进度",
+        key:"processing",
+        customSlot: 'processing',
+      },
+      {
         title:"备注",
-        width:"200px",
         key:"remarks"
       },
       {
         title:"入库时间",
-        width:"200px",
         key:"inbound_at"
       },
       {
         title:"确认时间",
-        width:"200px",
         key:"confirmed_at"
       },
       {
         title:"创建时间",
-        width:"200px",
         key:"created_at"
       },
       {
         title: '操作',
-        width: '180px',
+        width: '120px',
         customSlot: 'operator',
         key: 'operator',
         fixed: 'right'

@@ -30,26 +30,40 @@
           <lay-card title="物料列表">
             <lay-table :columns="columns" :dataSource="formData.items">
               <template #material_id="{ data,rowIndex }" >
-                <lay-form-item  :prop="'items.'+rowIndex+'.material_id'" label="物料名称">
+                <lay-form-item  :prop="'items.'+rowIndex+'.material_id'">
                   <lay-select v-model="data.material_id"  :items="materialSourceData" :options="materialSourceData" :show-search="true"></lay-select>
                 </lay-form-item>
               </template>
               <template #supplier_id="{ data,rowIndex }" >
-                <lay-form-item  :prop="'items.'+rowIndex+'.supplier_id'" label="供应商">
+                <lay-form-item  :prop="'items.'+rowIndex+'.supplier_id'">
                   <lay-select v-model="data.supplier_id"  :items="supplierSourceData" :options="supplierSourceData" :show-search="true"></lay-select>
                 </lay-form-item>
               </template>
               <template #plan_qty="{ data,rowIndex }">
-                <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'" label="计划数量">
+                <lay-form-item :prop="'items.'+rowIndex+'.plan_qty'">
                   <lay-input-number
                     v-model="data.plan_qty"
                   ></lay-input-number>
                 </lay-form-item>
               </template>
+              <template #actual_qty="{ data,rowIndex }">
+                <lay-form-item :prop="'items.'+rowIndex+'.actual_qty'">
+                  <lay-input-number
+                    v-model="data.actual_qty"
+                  ></lay-input-number>
+                </lay-form-item>
+              </template>
               <template #plan_unit_price="{ data,rowIndex }">
-                <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'" label="计划单价">
+                <lay-form-item :prop="'items.'+rowIndex+'.plan_unit_price'">
                   <lay-input-number :step="0.01"
                     v-model="data.plan_unit_price"
+                  ></lay-input-number>
+                </lay-form-item>
+              </template>
+              <template #actual_unit_price="{ data,rowIndex }">
+                <lay-form-item :prop="'items.'+rowIndex+'.actual_unit_price'">
+                  <lay-input-number :step="0.01"
+                    v-model="data.actual_unit_price"
                   ></lay-input-number>
                 </lay-form-item>
               </template>
@@ -89,39 +103,7 @@ import router from '../../../router'
 export default {
   name: 'Intricate',
   props: ['asn_id'],
-  setup() {
-    // 表格列
-    const columns = [
-      {
-        title: '物料名称',
-        key: 'material_id',
-        customSlot: 'material_id'
-      },
-      {
-        title: '供应商',
-        key: 'supplier_id',
-        customSlot: 'supplier_id'
-      },
-      {
-        title: '计划数量',
-        key: 'plan_qty',
-        ellipsisTooltip: true,
-        customSlot: 'plan_qty'
-      },
-      {
-        title: '计划单价',
-        key: 'plan_unit_price',
-        ellipsisTooltip: true,
-        customSlot: 'plan_unit_price'
-      },
-      {
-        title: '操作',
-        width: '180px',
-        key: 'operate',
-        customSlot: 'operate',
-        ellipsisTooltip: true
-      }
-    ]
+  setup(props) {
     // 删除行逻辑
     const deleteHandler = (data: any) => {
       layer.confirm('确定删除此条数据？', {
@@ -155,7 +137,9 @@ export default {
         material_id: '',
         supplier_id:'',
         plan_qty: 1,
-        plan_unit_price:0.00
+        actual_qty:0,
+        plan_unit_price:0.00,
+        actual_unit_price:0.00
       })
     }
 
@@ -171,7 +155,9 @@ export default {
         supplier_id:'',
         rowIndex: "1",
         plan_qty: 1,
-        plan_unit_price:0.00
+        actual_qty:0,
+        plan_unit_price:0.00,
+        actual_unit_price:0.00
       }
     ]
     })
@@ -204,6 +190,86 @@ export default {
 
     const materialSourceData = ref([])
     const supplierSourceData = ref([])
+    let columns = []
+    if(props.asn_id){
+      columns = [
+      {
+        title: '物料名称',
+        key: 'material_id',
+        customSlot: 'material_id'
+      },
+      {
+        title: '供应商',
+        key: 'supplier_id',
+        customSlot: 'supplier_id'
+      },
+      {
+        title: '计划数量',
+        key: 'plan_qty',
+        ellipsisTooltip: true,
+        customSlot: 'plan_qty'
+      },
+      {
+        title: '实收数量',
+        key: 'actual_qty',
+        ellipsisTooltip: true,
+        customSlot: 'actual_qty'
+      },
+      {
+        title: '计划单价',
+        key: 'plan_unit_price',
+        ellipsisTooltip: true,
+        customSlot: 'plan_unit_price'
+      },
+      {
+        title: '实际单价',
+        key: 'actual_unit_price',
+        ellipsisTooltip: true,
+        customSlot: 'actual_unit_price'
+      },
+      {
+        title: '操作',
+        width: '180px',
+        key: 'operate',
+        customSlot: 'operate',
+        ellipsisTooltip: true
+      }
+    ]
+  }else{
+    columns = [
+      {
+        title: '物料名称',
+        key: 'material_id',
+        customSlot: 'material_id'
+      },
+      {
+        title: '供应商',
+        key: 'supplier_id',
+        customSlot: 'supplier_id'
+      },
+      {
+        title: '计划数量',
+        key: 'plan_qty',
+        ellipsisTooltip: true,
+        customSlot: 'plan_qty'
+      },
+      {
+        title: '计划单价',
+        key: 'plan_unit_price',
+        ellipsisTooltip: true,
+        customSlot: 'plan_unit_price'
+      },
+      {
+        title: '操作',
+        width: '180px',
+        key: 'operate',
+        customSlot: 'operate',
+        ellipsisTooltip: true
+      }
+    ]
+  }
+    // 表格列
+    
     return {
       columns,
       formData,
@@ -231,7 +297,7 @@ export default {
         layer.close(id)
       })
     }
-     
+  
   }
 }
 </script>

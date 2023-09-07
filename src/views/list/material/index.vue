@@ -60,7 +60,7 @@
               <lay-button size="xs" @click="deleteRaw(data)">删除</lay-button>
             </template>
             <template v-slot:footer>
-              <!-- <lay-layer v-model="visible" :shade="false" :area="['500px', '450px']" :btn="action" :title="operationType">
+              <lay-layer v-model="visible" :shade="false" :area="['500px', '450px']" :btn="action" :title="operationType">
                 <div style="padding: 20px;">
                   <lay-form :model="model">
                     <lay-form-item label="条码" prop="barcode" required >
@@ -73,12 +73,11 @@
                       <lay-input v-model="model.description"></lay-input>
                     </lay-form-item>
                     <lay-form-item label="单价" prop="unit_price">
-                      <lay-input v-model="model.unit_price"></lay-input>
+                      <lay-input-number v-model="model.unit_price" :step="0.01"></lay-input-number>
                     </lay-form-item>
-                    <DetailPage :title="detail.title" :content="detail.content" />
                   </lay-form>
                 </div>
-              </lay-layer> -->
+              </lay-layer>
             </template>
           </lay-table>
         </lay-card>
@@ -91,12 +90,8 @@
 import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { material,createOrUpdate,deleteById } from '../../../api/module/material'
-import DetailPage from '../debug/page.vue';
 
 export default {
-  components:{
-    DetailPage
-  },
   setup() {
     const selectedKeys = ref([])
     const checkbox = ref(false)
@@ -145,6 +140,11 @@ export default {
         title: '创建时间',
         width: '180px',
         key: 'created_at'
+      },
+      {
+        title: '更新时间',
+        width: '180px',
+        key: 'updated_at'
       },
       {
         title: '操作',
@@ -274,9 +274,7 @@ export default {
             if(code == 200){
               layer.msg(msg,{ icon: 1 })
               visible.value = false
-              if(model.id == ''){
-                toSearch()
-              }
+              toSearch()
             }else{
               layer.msg(msg,{ icon: 2 })
             }
