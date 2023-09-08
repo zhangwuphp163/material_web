@@ -108,6 +108,12 @@ export default [
         meta: { title: '供应商列表', requireAuth: true},
       },
       {
+        path: '/list/user',
+        name: '用户列表',
+        component: () => import('../../views/list/admin/index.vue'),
+        meta: { title: '用户列表', requireAuth: true},
+      },
+      {
         path: '/list/debug',
         name: 'Debug',
         component: () => import('../../views/list/debug/index.vue'),

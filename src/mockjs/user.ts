@@ -50,6 +50,11 @@ const menus = [
         title: "供应商"
       },
       {
+        id: "/list/user",
+        icon: "layui-icon-list",
+        title: "用户列表"
+      },
+      {
         id: "/list/debug",
         icon: "layui-icon-list",
         title: "Debug"
